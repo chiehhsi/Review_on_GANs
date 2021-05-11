@@ -1,23 +1,49 @@
 # Review on GAN Models with Unpaired Dataset
 
-Generative Adversarial Networks (GAN) are the model that widely used to solve the image-to-image translation mapping an image from a source domain to a target domain. The accessible fields including colorization, super-resolution, style transfer, etc. We did the research review focusing on those who implemented GANs on unpaired datasets. Although there are plenty of GANs, we chose **CycleGAN**, **AttentionGAN**, and **U-GAN-IT** among all.
+Generative Adversarial Networks (GAN) are the model that have been widely used to solve the image-to-image translation, mapping an image from a source domain to a target domain. The accessible fields including colorization, super-resolution, style transfer, etc. We did the research review focusing on those who implemented GANs on unpaired datasets. Although there are plenty of GANs, we chose **CycleGAN**, **AttentionGAN**, and **U-GAN-IT** among all.
 
-This repository is mainly for learning and record use. Despite the details in existing repositories, for easy use, we wrote the simple instructions how we implemented them, translated images we obtained from these models and also provided related resources for GANs. Here we worked on `Horse2zebra` dataset.
+This repository is mainly for learning and record use. Despite details in existing repositories, for easy use, we wrote the simple instructions how we implemented them, translated images we obtained from these models and also provided related resources for GANs. Here we worked on `Horse2zebra` dataset.
 
-For original code and implementation, please visit original repositories : [Pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix), [AttentionGAN](https://github.com/Ha0Tang/AttentionGAN), [U-GAN-IT](https://github.com/znxlwm/UGATIT-pytorch).
+For original code and implementation, please visit official repositories : [Pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix), [AttentionGAN](https://github.com/Ha0Tang/AttentionGAN), [U-GAN-IT](https://github.com/znxlwm/UGATIT-pytorch).
 
 ### Review Models
 
 1. CycleGAN 
 - Package Setup
-```
-$ git clone https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
-$ cd pytorch-CycleGAN-and-pix2pix
-```
+Clone the repository using below command :
+	```
+	$ git clone https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+	$ cd pytorch-CycleGAN-and-pix2pix
+	```
 - Prepare Dataset
+After cloning the repo, change current directory to `/Path/To/pytorch-CycleGAN-and-pix2pix`
+And then download the dataset :
+	```
+	$ bash ./datasets/download_cyclegan_dataset.sh <dataname>
+	```
+	
+	`<dataname>` : name of dataset, here we used **horse2zebra**, but there are still other dataset provided by the authors e.g. "summer2winter_yosemite", "monet2photo", "cezanne2photo", "ukiyoe2photo", "vangogh2photo", "maps", "facades", "iphone2dslr_flower", "ae_photos", and "apple2orange".
+	- The file strucuture of dataset:
+	```
+	.
+	|-- datasets
+	|	|-- horse2zebra
+	|   |	|-- trainA
+	|   |	|-- trainB
+	|	|	|-- testA
+	|	|	|-- testB
+	|-- ...(other files)
+	```
 - Load Trained Model
-- Test Model & Results
+	Download corresponding pretrained model, the pretrained model located in `./checkpoints/horse2zebra/`
+	```
+	$ bash ./scripts/download_cyclegan_model.sh horse2zebra
+	```
 
+
+- Test Model & Results
+	The pretrained model used the image inside `./datasets/horse2zzebra/test*`, therefore, if you like to experiment custom images, modified images inside`testA` and `testB`.
+	Since we applied the pretrained model the
 
 
 2. AttentionGAN
@@ -35,7 +61,6 @@ We trained the model from scratch due to the limitation of the hardware we have,
 
 
 ### Our Implemented Results (Based on Custom Horse Dataset)
-
 
 
 ### Repository Files
