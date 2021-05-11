@@ -2,7 +2,7 @@
 
 Generative Adversarial Networks (GAN) are the model that have been widely used to solve the image-to-image translation, mapping an image from a source domain to a target domain. The accessible fields including colorization, super-resolution, style transfer, etc. We did the research review focusing on those who implemented GANs on unpaired datasets. Although there are plenty of GANs, we chose **CycleGAN**, **AttentionGAN**, and **U-GAN-IT** among all.
 
-This repository is mainly for learning and record use. Despite details in existing repositories, for easy use, we wrote the simple instructions how we implemented them, translated images we obtained from these models and also provided related resources for GANs. Here we worked on `Horse2zebra` dataset.
+This repository is mainly for learning and record use. Despite details in existing repositories, for easy use, we wrote the simple instructions how we implemented them, translated images we obtained from these models and also provided related resources for GANs. Here we worked on `Horse2zebra` dataset, and we also provided a custom horse dataset (`horse.zip`) to do addtional test.
 
 For original code and implementation, please visit official repositories : [Pytorch-CycleGAN-and-pix2pix](https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix), [AttentionGAN](https://github.com/Ha0Tang/AttentionGAN), [U-GAN-IT](https://github.com/znxlwm/UGATIT-pytorch).
 
@@ -10,41 +10,57 @@ For original code and implementation, please visit official repositories : [Pyto
 
 1. CycleGAN 
 - Package Setup
-Clone the repository using below command :
-	```
-	$ git clone https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
-	$ cd pytorch-CycleGAN-and-pix2pix
-	```
-- Prepare Dataset
-After cloning the repo, change current directory to `/Path/To/pytorch-CycleGAN-and-pix2pix`
-And then download the dataset :
-	```
-	$ bash ./datasets/download_cyclegan_dataset.sh <dataname>
-	```
+   - Clone the repository using below command :
+   		```
+    	$ git clone https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+    	$ cd pytorch-CycleGAN-and-pix2pix
+    	```
+
+	- After cloning the repo, change current directory to `/Path/To/pytorch-CycleGAN-and-pix2pix`
 	
-	`<dataname>` : name of dataset, here we used **horse2zebra**, but there are still other dataset provided by the authors e.g. "summer2winter_yosemite", "monet2photo", "cezanne2photo", "ukiyoe2photo", "vangogh2photo", "maps", "facades", "iphone2dslr_flower", "ae_photos", and "apple2orange".
-	- The file strucuture of dataset:
-	```
-	.
-	|-- datasets
-	|	|-- horse2zebra
-	|   |	|-- trainA
-	|   |	|-- trainB
-	|	|	|-- testA
-	|	|	|-- testB
-	|-- ...(other files)
-	```
+- Prerequisites
+		- Pytorch >= 1.4.0
+		- Torchvision > 0.5.0
+		- Dominate >= 2.4.0
+		- Visdom >=1.8.8.0
+ Make sure to have the dependencies ready : `pip install -r requirements.txt`
+ 
+- Prepare Dataset
+	- Download the dataset :
+		```
+		$ bash ./datasets/download_cyclegan_dataset.sh <dataname>
+		```
+    
+       `<dataname>` : name of dataset, here we used **horse2zebra**, but there are still other dataset provided by the authors, e.g. "summer2winter_yosemite", "monet2photo", "cezanne2photo", "ukiyoe2photo", "vangogh2photo", "maps", "facades", "iphone2dslr_flower", "ae_photos", and "apple2orange".
+
+    - The file strucuture of dataset:
+    	```
+    	.
+    	|-- datasets
+    	|	|-- horse2zebra
+    	|	|	|-- trainA
+    	|	|	|-- trainB
+    	|	|	|-- testA
+    	|	|	|-- testB
+    	|-- ...(other files)
+    	```
 - Load Trained Model
-	Download corresponding pretrained model, the pretrained model located in `./checkpoints/horse2zebra/`
+    There are details showing how to train and test from scratch in official repo, however, we only show the instruction on how to apply trained model and test.
+	Download corresponding pretrained model using following command, the pretrained model located in `./checkpoints/horse2zebra/`
 	```
 	$ bash ./scripts/download_cyclegan_model.sh horse2zebra
 	```
 
 
 - Test Model & Results
-	The pretrained model used the image inside `./datasets/horse2zzebra/test*`, therefore, if you like to experiment custom images, modified images inside`testA` and `testB`.
-	Since we applied the pretrained model the
-
+	The pretrained model used the image inside `./datasets/horse2zzebra/test*`, therefore, if you would like to experiment custom images, modified images inside`testA` and `testB`.
+	```
+	$ python test.py --dataroot datasets/horse2zebra/testA --name horse2zebra_pretrained --model test --no_dropout --gpu_ids -1
+	```
+	`--model test` : generating results of CycleGAN for one side. This option will automatically set `--dataset_model single`, which only loads the image from one set. 
+	`--gpu_ids -1` :  The default setting is using GPU, in our case, we only used CPU so the argument needed to be added.
+    After running the command, the default results will be created at `./results/horse2zebra_pretrained`, otherwise, use `--result_dir` to specify the result directory
+    For more detail of command arguments, please check `$ python test.py --help`
 
 2. AttentionGAN
 - Package Setup
